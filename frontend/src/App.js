@@ -1,3 +1,5 @@
+// YoutubePage -- contains descendants from SearchResults & VideoPage
+
 // General Imports
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
