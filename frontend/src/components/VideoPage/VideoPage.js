@@ -1,0 +1,1 @@
+// Embed a video player to show/play that was searched from SearchResults
