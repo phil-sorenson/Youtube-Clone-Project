@@ -9,5 +9,6 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     video_id = models.CharField(max_length=30)
     text = models.CharField(max_length=100)
-    likes = models.IntegerField()
-    dislikes = models.IntegerField()
+    likes = models.IntegerField(default=0)
+    dislikes = models.IntegerField(default=0)
+        # Default = 0 allows you to not have to include this in Postman as an object value
