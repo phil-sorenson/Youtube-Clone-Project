@@ -1,3 +1,6 @@
+// Todo: Make the brand route back to YoutubePage
+
+
 import React from "react";
 import { useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
@@ -15,7 +18,7 @@ const Navbar = () => {
             <b>Youtube Clone Flex </b>
           </Link>
           <br />
-          Welcome {user.username}
+          <h2>Welcome {user.username}</h2>
         </li>
         <li>
           {user ? (

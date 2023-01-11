@@ -24,6 +24,7 @@ import useAuth from '../../hooks/useAuth';
 
 import { KEY } from '../../localKey';
 import { Link, useParams } from 'react-router-dom';
+import YoutubeEmbed from '../../components/YoutubeEmbed/YoutubeEmbed';
 
 
 const VideoPage = () => {
@@ -31,7 +32,7 @@ const VideoPage = () => {
     const [user, token] = useAuth();
     const [video, setVideo] = useState(null);
     const [relatedVideos, setRelatedVideos] = useState([]);
-    const [comments, setComments] = useState({})
+    const [comments, setComments] = useState([])
     const { videoId } = useParams()
 
 
@@ -89,22 +90,60 @@ const VideoPage = () => {
         }
     }
 
+    // var tag = document.createElement('script');
+    // tag.src = "https://www.youtube.com/player_api";
+    // var firstScriptTag = document.getElementsByTagName('script')[0];
+    // firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    
+    // var player;
+    // function onYouTubePlayerAPIReady() {
+    //     player = new YT.Player('player', {
+    //         height: '360',
+    //         width: '640',
+    //         videoId: `${videoId}`,
+    //         playerVars: {
+    //             'playsinline':1
+    //         },
+    //         events: {
+    //             'onReady': onPlayReady,
+    //             'onStateChange': onPlayStateChange
+    //         }
+    //     });
+    // } 
+
+    // function onPlayerReady(event) {
+    //     event.target.playVideo();
+    // }
+
+    // const YoutubeEmbed = ({videoId}) => {
+    //     <div className='yt-player' id='player'>
+    //         <iframe>
+    //             {src=`https://www.youtube.com/embed/${videoId}`}
+    //             {style={'width':'640', 'height':'360'}}
+    //             {frameborder='0'}
+    //             {allow= 'autoplay'}
+    //             {title= 'embedded-player'}
+    //             {type='text/html'}
+    //         </iframe>
+    //     </div>
+    // }
 
     return ( 
         <div>
             {video && (
-              <div>
-                <h2>{video.snippet.title}</h2>
                 <div>
-                    <iframe src={`https://www.youtube.com/embed/${videoId}`} />
+                    <h2>{video.snippet.title}</h2>
+                <div id='player'>
+                    <YoutubeEmbed videoId={videoId}/>
+                    {/* <iframe id='player' title='video' type='text/html'  style={{'height':'360', 'width':'640'}} src={`https://www.youtube.com/embed/${videoId}`}></iframe> */}
                 </div>
-              </div>
+                </div>
             )}
             <div>
                 <h3>Comments</h3>
                 <ul>
-                    {comments.map((comment)=> {
-                        return(
+                 {comments.length > 0 && comments.map((comment)=> {
+                    return(
                         <li key={comment.id}>
                             <p>{comment.text}</p>
                             <p>Comment By: {comment.user.username}</p>

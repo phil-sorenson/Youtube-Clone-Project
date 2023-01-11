@@ -27,7 +27,7 @@ function App() {
     <div>
       <Navbar />
       {/* <SearchResults /> */}
-      <VideoPage />
+      <VideoPage  />
       <Routes>
         <Route
           path="/"
