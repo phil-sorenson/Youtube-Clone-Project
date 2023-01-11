@@ -10,7 +10,7 @@ import "./App.css";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import YoutubePage from "./pages/YoutubePage/YoutubePage";
-import SearchResults from "./pages/SearchResultsPage/SearchResults";
+// import SearchResults from "./pages/SearchResultsPage/SearchResults";
 
 // Component Imports
 import Navbar from "./components/NavBar/NavBar";
@@ -18,6 +18,7 @@ import Footer from "./components/Footer/Footer";
 
 // Util Imports
 import PrivateRoute from "./utils/PrivateRoute";
+import VideoPage from "./pages/VideoPage/VideoPage";
 
 // import VideoPage from "./pages/VideoPage/VideoPage";
 
@@ -26,6 +27,7 @@ function App() {
     <div>
       <Navbar />
       {/* <SearchResults /> */}
+      <VideoPage />
       <Routes>
         <Route
           path="/"
@@ -35,6 +37,7 @@ function App() {
             </PrivateRoute>
           }
         />
+        <Route path= '/videopage/' element={<VideoPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
       </Routes>

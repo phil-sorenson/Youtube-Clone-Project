@@ -1,0 +1,7 @@
+/* ToDo: Make the videos show as 2 separate rows */
+/* ToDo: Get rid of the side to side scrolling box that shows on page right now */
+
+.videos {
+    display: grid;
+    place-items: center;
+}

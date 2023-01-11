@@ -9,33 +9,36 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
+import { KEY } from '../../localKey';
 // import useAuth from '../../hooks/useAuth';
 // import { useNavigate } from 'react-router-dom';
+import './YoutubePage.css'
 
 const YoutubePage = () => {
-
-    const [searchResults, setSearchResults] = useState([])
-    const [searchQuery, setSearchQuery] = useState('')
-    const [videos, setVideos] = useState([])
+    const [user, token] = useAuth();
+    const [searchResults, setSearchResults] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [videos, setVideos] = useState([]);
     
     
     useEffect(() => {
         
-        const fetchVideos = async () => {
+        const videoArray = async () => {
             try {
-                const response = await axios.get(`https://www.googleapis.com/youtube/v3/search?q=The Office&key=AIzaSyC72FNROnJotKG2wGubIHGav2ZvlS9Zs_c&part=snippet&type=video&maxResults=6`)
+                const response = await axios.get(`https://www.googleapis.com/youtube/v3/search?q=The Office&key=${KEY}&part=snippet&type=video&maxResults=2`)
                 setVideos(response.data.items)
             } catch (error) {
                 console.log(error.message)
             }
         };
-        fetchVideos();
+        videoArray();
     },[])
     
     const handleSearch = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.get(`https://www.googleapis.com/youtube/v3/search?q=${searchQuery}&key=AIzaSyC72FNROnJotKG2wGubIHGav2ZvlS9Zs_c&part=snippet&type=video&maxResults=6`)
+            const response = await axios.get(`https://www.googleapis.com/youtube/v3/search?q=${searchQuery}&key=${KEY}&part=snippet&type=video&maxResults=6`)
             setSearchResults(response.data.items)
         } catch (error) {
             console.log(error.message)
@@ -43,7 +46,9 @@ const YoutubePage = () => {
     }
 
     return (
-        <div>
+        <div className='container'>
+            <div className='form-div'>
+            <h1>Home Page for {user.username}</h1>
             <form onSubmit={handleSearch}>
                 <input
                     type='text'
@@ -52,22 +57,28 @@ const YoutubePage = () => {
                 />
                 <br />
                 <button type='submit'>Search</button>
-            </form>  
+            </form>
+            </div>  
             <div>
                 <h2>Featured Videos</h2>
-                <ul>
+            </div>
+                <div className='videos'>
+                    <ul>
                     {videos.map((video) => {
                         return (
-                        <li key={video.id.videoId}>
-                            <Link to={`/videopage/${video.id.videoId}`}>
-                                <img src={video.snippet.thumbnails.default.url} alt={video.snippet.title}/>
-                                <p>{video.snippet.title}</p>
-                            </Link>
-                        </li>
+                        <div style={{margin:'.5rem'}}>
+                            <li key={video.id.videoId}>
+                                <Link to={`/videopage/${video.id.videoId}`}>
+                                    <img src={video.snippet.thumbnails.default.url} alt={video.snippet.title}/>
+                                    <p style={{'fontSize':'.25rem'}}>{video.snippet.title}</p>
+                                </Link>
+                            </li>
+                        </div>
                         );
                     })}
-                </ul>
-            </div>
+                    </ul>
+                </div>
+           
         </div>
      );
 };

@@ -12,57 +12,137 @@
     // Have Entered Comment post below previous comments without any page refresh! (OnSubmit preventDefault(), key=index.comments)
     // Will use our built HTTP requests to show the comments and allow user to post comment
 
+//! https://www.youtube.com/embed/VIDEO_ID
+
+//!  <iframe id="ytplayer" type="text/html" width="640" height="360"
+//!   src="https://www.youtube.com/embed/M7lc1UVf-VE?autoplay=1&origin=http://example.com"
+//!  frameborder="0"></iframe> 
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import useAuth from '../../hooks/useAuth';
 
+import { KEY } from '../../localKey';
+import { Link, useParams } from 'react-router-dom';
 
 
 const VideoPage = () => {
 
-    const response = async () => {
-        comments = await axios.get('http://127.0.0.1:8000/api/comments/M8KmqaJvgpE')
-    }; response[comments]
-    
     const [user, token] = useAuth();
     const [video, setVideo] = useState(null);
     const [relatedVideos, setRelatedVideos] = useState([]);
+    const [comments, setComments] = useState({})
+    const { videoId } = useParams()
 
 
-    useEffect(() => {
-
-    }, [token])
-    console.log(comments)
-    console.log('inside homepage')
-    // useEffect(() => {
-    //     const fetchVideos = async () => {
-    //         try {
-    //             let response = await axios.get('https://www.googleapis.com/youtube/v3/search?q=The Office&key=AIzaSyC72FNROnJotKG2wGubIHGav2ZvlS9Zs_c&part=snippet&type=video&maxResults=6')   
-    //             setSearchQuery(response.data.items)
-    //             console.log(response.data)
-    //         } catch (error) {
-    //             console.log(error.message)
-    //         }
-    //     }
-    //     fetchVideos();
-    // }, [])
     
+    useEffect(() => {
+        const fetchVideo = async () => {
+            try {
+                const videoResponse = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails&id=${videoId}&key=${KEY}`)   
+                setVideo(videoResponse.data)
+                console.log(videoResponse.data)
+            } catch (error) {
+                console.log(error.message)
+            }
+        }
+        fetchVideo();
+    }, [videoId])
+    
+    useEffect(() => {
+        const fetchComments = async () => {
+            try {
+                const commentsResponse = await axios.get(`http://127.0.0.1:8000/api/comments/${videoId}`)
+                setComments(commentsResponse.data)
+                console.log(commentsResponse.data)
+            } catch (error) {
+                console.log(error.message)
+            }
+        }
+        fetchComments();
+    },[videoId])
+
+    useEffect(()=> {
+        const fetchRelatedVideos = async () => {
+            try {
+                const relatedVideosResponse = await axios.get(`https://www.googleapis.com/youtube/v3/search?type=video&relatedToVideoId=${videoId}&key=${KEY}&part=snippet`)
+                setRelatedVideos(relatedVideosResponse.data)
+            } catch (error) {
+                console.log(error.message)
+            }
+        }
+        fetchRelatedVideos();
+    }, [videoId])
+
+    const handleCommentSubmit = async (event, comment) => {
+        event.preventDefault();
+        if(!user) {
+            return;
+        }
+        try {
+            await axios.post(`http://127.0.0.1:8000/api/comments`, comment, {
+                headers: {
+                    Authorization: "Bearer " + token}
+            });
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
+
+
     return ( 
-        <div className='container'>
-            <h2>HomePage for {user.username}</h2>
-            {token && (
-                <h3>Must Be Logged in To Comment!</h3>
+        <div>
+            {video && (
+              <div>
+                <h2>{video.snippet.title}</h2>
+                <div>
+                    <iframe src={`https://www.youtube.com/embed/${videoId}`} />
+                </div>
+              </div>
             )}
-            {videos.length> 0 && comments && comments.map((comment)=> (
-                <ul>{comment.userId}: {comment.comment}</ul>
-            ))}
+            <div>
+                <h3>Comments</h3>
+                <ul>
+                    {comments.map((comment)=> {
+                        return(
+                        <li key={comment.id}>
+                            <p>{comment.text}</p>
+                            <p>Comment By: {comment.user.username}</p>
+                        </li>
+                        )
+                    })}
+                </ul>
+                {user ? (
+                    <form onSubmit={handleCommentSubmit}>
+                        <input type='text' placeholder='Add Comment' />
+                        <button type='submit'>Submit</button>
+                    </form>
+                ) : (
+                    <p>You Must be Logged-in to Post a Comment</p>
+                )}
+            </div>
+            <div>
+                <h2>Related Videos</h2>
+                <ul>
+                    {relatedVideos.items.map((video)=> {
+                        return(
+                        <li key={video.id.videoId}>
+                            <Link type={`/videopage/${video.id.videoId}`}>
+                                <img src={video.snippet.thumbnails.default.url} alt={video.snippet.title}/>
+                                <p style={{'fontSize':'.25rem'}}>{video.snippet.title}</p>
+                            </Link>
+                        </li>
+                        )
+                    })}
+                </ul>
+            </div>
        </div>
     );
 }
              
     export default VideoPage;
 
-//////////////////////////////////////////!
+// //////////////////////////////////////////!
 
 
 
