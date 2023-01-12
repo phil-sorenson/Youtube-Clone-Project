@@ -27,7 +27,7 @@ function App() {
     <div>
       <Navbar />
       {/* <SearchResults /> */}
-      <VideoPage  />
+      <VideoPage /> 
       <Routes>
         <Route
           path="/"
@@ -37,7 +37,7 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path= '/videopage/' element={<VideoPage />} />
+        <Route path= '/videopage/:videoId/' element={<VideoPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
       </Routes>
