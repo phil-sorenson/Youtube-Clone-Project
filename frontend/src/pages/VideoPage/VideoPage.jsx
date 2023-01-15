@@ -12,11 +12,7 @@
     // Have Entered Comment post below previous comments without any page refresh! (OnSubmit preventDefault(), key=index.comments)
     // Will use our built HTTP requests to show the comments and allow user to post comment
 
-//! https://www.youtube.com/embed/VIDEO_ID
 
-//!  <iframe id="ytplayer" type="text/html" width="640" height="360"
-//!   src="https://www.youtube.com/embed/M7lc1UVf-VE?autoplay=1&origin=http://example.com"
-//!  frameborder="0"></iframe> 
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -24,7 +20,7 @@ import useAuth from '../../hooks/useAuth';
 
 import { KEY } from '../../localKey';
 import { Link, useParams } from 'react-router-dom';
-import RelatedVideos from '../../utils/RelatedVideos';
+import RelatedVideos from '../../components/RelatedVideos/RelatedVideos';
 import './VideoPage.css'
 
 const VideoPage = () => {
@@ -79,22 +75,20 @@ const VideoPage = () => {
 
     return ( 
         <div>
-            <div>
-                <div>
-                    {/* <h2>{video.snippet.title}</h2> */}
-                    <iframe
-                        src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
-                        title='embedded-player'
-                        type= "text/html"
-                        id="ytplayer"
-                        // style={{'height':'360', 'width':'640'}}
-                        // title={video.snippet.title} 
-                    ></iframe>
-                </div>
-            </div> 
+            <div className='iframe-div'>
+                {/* <h2>{video.snippet.title}</h2> */}
+                <iframe
+                    src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+                    title='embedded-player'
+                    type= "text/html"
+                    id="ytplayer"
+                    // style={{'height':'360', 'width':'640'}}
+                    // title={video.snippet.title} 
+                ></iframe>
+            </div>
             <div className='comments-section'>
                 <div className='comment-container'>
-                <h2>Comments</h2>
+                <h2>Comments: </h2>
                 <ul>
                 {comments.length > 0 && comments.map((comment)=> {
                 return(

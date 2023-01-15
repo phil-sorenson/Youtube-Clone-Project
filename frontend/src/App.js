@@ -19,7 +19,7 @@ import Footer from "./components/Footer/Footer";
 // Util Imports
 import PrivateRoute from "./utils/PrivateRoute";
 import VideoPage from "./pages/VideoPage/VideoPage";
-import RelatedVideos from "./utils/RelatedVideos";
+import RelatedVideos from "./components/RelatedVideos/RelatedVideos";
 
 
 

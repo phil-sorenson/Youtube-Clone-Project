@@ -1,9 +1,9 @@
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
-import { KEY } from "../localKey";
+import { KEY } from "../../localKey";
 import { Link } from "react-router-dom";
-
+import './RelatedVideos.css'
 
 
 const RelatedVideos = () => {
@@ -33,18 +33,20 @@ const RelatedVideos = () => {
             { videoId && (
                 <>
             <h3>Related Videos</h3>
-            <ul>
-                {relatedVideos?.items?.map((video) => {
-                        return (
-                    <li key={video.id.videoId}>
-                        <Link to={`/videopage/${video.id.videoId}`}>
-                            <img src={video.snippet.thumbnails.default.url} alt={video.snippet.title}/>
-                            <p style={{'fontSize':'.25rem'}}>{video.snippet.title}</p>
-                        </Link>
-                    </li>
-                    )
-                })}
-            </ul>
+            <div className="related-videos-parent">
+                <ul>
+                    {relatedVideos?.items?.map((video) => {
+                            return (
+                        <li key={video.id.videoId}>
+                            <Link to={`/videopage/${video.id.videoId}`}>
+                                <img src={video.snippet.thumbnails.default.url} alt={video.snippet.title}/>
+                                <p style={{'fontSize':'.25rem'}}>{video.snippet.title}</p>
+                            </Link>
+                        </li>
+                        )
+                    })}
+                </ul>
+            </div>
             </>
             )}
         </div>
