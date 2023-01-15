@@ -20,14 +20,14 @@ import Footer from "./components/Footer/Footer";
 import PrivateRoute from "./utils/PrivateRoute";
 import VideoPage from "./pages/VideoPage/VideoPage";
 
-// import VideoPage from "./pages/VideoPage/VideoPage";
+
 
 function App() {
   return (
     <div>
       <Navbar />
       {/* <SearchResults /> */}
-      <VideoPage /> 
+      <VideoPage />
       <Routes>
         <Route
           path="/"

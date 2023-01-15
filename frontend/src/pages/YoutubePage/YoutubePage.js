@@ -28,6 +28,7 @@ const YoutubePage = () => {
             try {
                 const response = await axios.get(`https://www.googleapis.com/youtube/v3/search?q=The Office&key=${KEY}&part=snippet&type=video&maxResults=2`)
                 setVideos(response.data.items)
+                console.log('response',response.data.items)
             } catch (error) {
                 console.log(error.message)
             }

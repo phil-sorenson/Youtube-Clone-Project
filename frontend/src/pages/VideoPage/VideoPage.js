@@ -24,7 +24,7 @@ import useAuth from '../../hooks/useAuth';
 
 import { KEY } from '../../localKey';
 import { Link, useParams } from 'react-router-dom';
-// import YoutubeEmbed from '../../components/YoutubeEmbed/YoutubeEmbed';
+import RelatedVideos from '../../utils/RelatedVideos';
 
 
 const VideoPage = () => {
@@ -32,19 +32,21 @@ const VideoPage = () => {
     const [user, token] = useAuth();
     const [video, setVideo] = useState(null);
     const [comments, setComments] = useState([])
-    const [relatedVideos, setRelatedVideos] = useState([]);
+    
     const { videoId } = useParams()
+    
 
-
-    const fetchVideo = async () => {
-        try {
-            const videoResponse = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails&id=${videoId}&key=${KEY}`)   
-            setVideo(videoResponse.data)
-            console.log("video data",videoResponse.data)
-        } catch (error) {
-            console.log(error.message)
+    
+        const fetchVideo = async () => {
+            try {
+                const videoResponse = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails&id=${videoId}&key=${KEY}`)   
+                setVideo(videoResponse.data.items)
+                console.log('video Data',videoResponse.data);
+            } catch (error) {
+                console.log(error.message)
+            }    
         }
-    }
+   
     
     const fetchComments = async () => {
         try {
@@ -54,55 +56,38 @@ const VideoPage = () => {
         } catch (error) {
             console.log(error.message)
         }
+        
     }
     
-    const fetchRelatedVideos = async () => {
-        try {
-            const relatedVideosResponse = await axios.get(`https://www.googleapis.com/youtube/v3/search?type=video&relatedToVideoId=${videoId}&key=${KEY}&part=snippet`)
-            setRelatedVideos(relatedVideosResponse.data)
-            console.log('related Video', relatedVideosResponse.data)
-        } catch (error) {
-            console.log(error.message)
-        }
-    }
+    // const handleCommentSubmit = async (event, comment) => {
+    //     event.preventDefault();
+    //     try {
+    //         await axios.post(`http://127.0.0.1:8000/api/comments`, comment, {
+    //             headers: {
+    //                 Authorization: "Bearer " + token}
+    //         });
+    //     } catch (error) {
+    //         console.log(error.message)
+    //     }
+    // }
+
     useEffect(() => {
         fetchVideo();
         fetchComments();
-        fetchRelatedVideos();
     }, [videoId])
-   
-  
-
-
-
-    const handleCommentSubmit = async (event, comment) => {
-        event.preventDefault();
-        
-        try {
-            await axios.post(`http://127.0.0.1:8000/api/comments`, comment, {
-                headers: {
-                    Authorization: "Bearer " + token}
-            });
-        } catch (error) {
-            console.log(error.message)
-        }
-    }
 
 
     return ( 
         <div>
-            {/* {console.log(videoId)}
-            {console.log('relatedVideos', relatedVideos.video.id.videoId)}
-            {console.log('comments', comments)}
-             {video && (
+             {/* {video && (
                 <div>
-                    <h2>{video.snippet.title}</h2>
-                <div>
-                    <iframe title={'player'} type='text/html'  style={{'height':'360', 'width':'640'}} src={`https://www.youtube.com/embed/${videoId}`}></iframe>
+                    <h2>{video.snippet}</h2>
+                
+                    <iframe  type='text/html'  style={{'height':'360', 'width':'640'}} src={`https://www.youtube.com/embed/${videoId}`}></iframe>
                 </div>
-                </div>
-            )}
-                <div>
+        
+            )}  */}
+                {/* <div>
                     <h3>Comments</h3>
                     <ul>
                     {comments.length > 0 && comments.map((comment)=> {
@@ -122,22 +107,10 @@ const VideoPage = () => {
                 ) : (
                     <p>You Must be Logged-in to Post a Comment</p>
                 )}
-            </div>
+            </div> */}
             <div>
-                <h2>Related Videos</h2>
-                <ul>
-                    {relatedVideos.items.map((video)=> {
-                        return(
-                            <li key={video.id.videoId}>
-                                <Link type={`/videopage/${video.id.videoId}`}>
-                                    <img src={video.snippet.thumbnails.default.url} alt={video.snippet.title}/>
-                                    <p style={{'fontSize':'.25rem'}}>{video.snippet.title}</p>
-                                </Link>
-                            </li>
-                        )
-                    })}
-                </ul>
-            </div>  */}
+                <RelatedVideos videoId={videoId} />
+            </div>  
         </div>
     );
 }
