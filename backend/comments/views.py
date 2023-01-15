@@ -18,7 +18,7 @@ def get_comments(request, video_id):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def create_comments(request):    
+def create_comments(request):
     serializer = CommentSerializer(data = request.data, partial = True)
     if serializer.is_valid():
         serializer.save(user=request.user)
