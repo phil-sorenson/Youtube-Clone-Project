@@ -14,31 +14,39 @@ const RelatedVideos = () => {
     useEffect(() => {
         const fetchRelatedVideos = async () => {
         try {
-            const relatedVideosResponse = await axios.get(`https://www.googleapis.com/youtube/v3/search?type=video&relatedToVideoId=${videoId}&key=${KEY}&part=snippet`)
-            setRelatedVideos(relatedVideosResponse.data)
-            console.log('related Video', relatedVideosResponse.data)
+            if(videoId) {
+                const relatedVideosResponse = await axios.get(`https://www.googleapis.com/youtube/v3/search?type=video&relatedToVideoId=${videoId}&key=${KEY}&part=snippet`)
+                setRelatedVideos(relatedVideosResponse.data)
+                console.log('related Video', relatedVideosResponse.data)
+            }
         } catch (error) {
             console.log(error.message)
         }
-       fetchRelatedVideos(); 
     }
+       fetchRelatedVideos(); 
     }, [videoId])
     
 
 
     return ( 
         <div>
-            <h2>Related Videos</h2>
+            { videoId && (
+                <>
+            <h3>Related Videos</h3>
             <ul>
-                {relatedVideos.items.map((video) => {
+                {relatedVideos?.items?.map((video) => {
+                        return (
                     <li key={video.id.videoId}>
-                        <Link to={`/video/${video.id.videoId}`}>
+                        <Link to={`/videopage/${video.id.videoId}`}>
                             <img src={video.snippet.thumbnails.default.url} alt={video.snippet.title}/>
-                            <p>{video.snippet.title}</p>
+                            <p style={{'fontSize':'.25rem'}}>{video.snippet.title}</p>
                         </Link>
                     </li>
+                    )
                 })}
             </ul>
+            </>
+            )}
         </div>
      );
 }

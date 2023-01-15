@@ -67,8 +67,8 @@ const YoutubePage = () => {
                     <ul>
                     {videos.map((video) => {
                         return (
-                        <div style={{margin:'.5rem'}}>
-                            <li key={video.id.videoId}>
+                        <div style={{margin:'.5rem'}} key={video.id.videoId}>
+                            <li >
                                 <Link to={`/videopage/${video.id.videoId}`}>
                                     <img src={video.snippet.thumbnails.default.url} alt={video.snippet.title}/>
                                     <p style={{'fontSize':'.25rem'}}>{video.snippet.title}</p>

@@ -25,7 +25,7 @@ import useAuth from '../../hooks/useAuth';
 import { KEY } from '../../localKey';
 import { Link, useParams } from 'react-router-dom';
 import RelatedVideos from '../../utils/RelatedVideos';
-
+import './VideoPage.css'
 
 const VideoPage = () => {
 
@@ -59,17 +59,17 @@ const VideoPage = () => {
         
     }
     
-    // const handleCommentSubmit = async (event, comment) => {
-    //     event.preventDefault();
-    //     try {
-    //         await axios.post(`http://127.0.0.1:8000/api/comments`, comment, {
-    //             headers: {
-    //                 Authorization: "Bearer " + token}
-    //         });
-    //     } catch (error) {
-    //         console.log(error.message)
-    //     }
-    // }
+    const handleCommentSubmit = async (event, comment) => {
+        event.preventDefault();
+        try {
+            await axios.post(`http://127.0.0.1:8000/api/comments`, comment, {
+                headers: {
+                    Authorization: "Bearer " + token}
+            });
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
 
     useEffect(() => {
         fetchVideo();
@@ -79,26 +79,35 @@ const VideoPage = () => {
 
     return ( 
         <div>
-             {/* {video && (
+            <div>
                 <div>
-                    <h2>{video.snippet}</h2>
-                
-                    <iframe  type='text/html'  style={{'height':'360', 'width':'640'}} src={`https://www.youtube.com/embed/${videoId}`}></iframe>
+                    {/* <h2>{video.snippet.title}</h2> */}
+                    <iframe
+                        src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+                        title='embedded-player'
+                        type= "text/html"
+                        id="ytplayer"
+                        // style={{'height':'360', 'width':'640'}}
+                        // title={video.snippet.title} 
+                    ></iframe>
                 </div>
-        
-            )}  */}
-                {/* <div>
-                    <h3>Comments</h3>
-                    <ul>
-                    {comments.length > 0 && comments.map((comment)=> {
-                    return(
-                        <li key={comment.id}>
-                            <p>{comment.text}</p>
-                            <p>Comment By: {comment.user.username}</p>
-                        </li>
+            </div> 
+            <div className='comments-section'>
+                <div className='comment-container'>
+                <h2>Comments</h2>
+                <ul>
+                {comments.length > 0 && comments.map((comment)=> {
+                return(
+                    <li key={comment.id}>
+                        <p>{comment.text}</p>
+                        <p>Comment By: {comment.user.username}</p>
+                        <br/>
+                    </li>
                         )
                     })}
                 </ul>
+                </div>
+                <div className='comment-submit-form'>
                 {user ? (
                     <form onSubmit={handleCommentSubmit}>
                         <input type='text' placeholder='Add Comment' />
@@ -107,7 +116,8 @@ const VideoPage = () => {
                 ) : (
                     <p>You Must be Logged-in to Post a Comment</p>
                 )}
-            </div> */}
+                </div>
+            </div> 
             <div>
                 <RelatedVideos videoId={videoId} />
             </div>  

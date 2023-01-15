@@ -19,6 +19,7 @@ import Footer from "./components/Footer/Footer";
 // Util Imports
 import PrivateRoute from "./utils/PrivateRoute";
 import VideoPage from "./pages/VideoPage/VideoPage";
+import RelatedVideos from "./utils/RelatedVideos";
 
 
 
@@ -27,7 +28,8 @@ function App() {
     <div>
       <Navbar />
       {/* <SearchResults /> */}
-      <VideoPage />
+      {/* <VideoPage /> */}
+      {/* <RelatedVideos /> */}
       <Routes>
         <Route
           path="/"
