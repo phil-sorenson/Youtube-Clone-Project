@@ -2,6 +2,7 @@
 /* ToDo: Get rid of the side to side scrolling box that shows on page right now */
 
 .videos {
-    display: grid;
+    display: flex;
     place-items: center;
+    gap: 5px;
 }

@@ -1,0 +1,8 @@
+.search-results {
+    display: flex;
+    gap: 10px;
+}
+
+ul {
+    font-size:xx-small;
+}

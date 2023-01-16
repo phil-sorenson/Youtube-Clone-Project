@@ -14,6 +14,7 @@ import { KEY } from '../../localKey';
 // import useAuth from '../../hooks/useAuth';
 // import { useNavigate } from 'react-router-dom';
 import './YoutubePage.css'
+import SearchResults from '../SearchResultsPage/SearchResults';
 
 const YoutubePage = () => {
     const [user, token] = useAuth();
@@ -26,7 +27,7 @@ const YoutubePage = () => {
         
         const videoArray = async () => {
             try {
-                const response = await axios.get(`https://www.googleapis.com/youtube/v3/search?q=The Office&key=${KEY}&part=snippet&type=video&maxResults=2`)
+                const response = await axios.get(`https://www.googleapis.com/youtube/v3/search?q=The Office&key=${KEY}&part=snippet&type=video&maxResults=3`)
                 setVideos(response.data.items)
                 console.log('response',response.data.items)
             } catch (error) {
@@ -41,6 +42,7 @@ const YoutubePage = () => {
         try {
             const response = await axios.get(`https://www.googleapis.com/youtube/v3/search?q=${searchQuery}&key=${KEY}&part=snippet&type=video&maxResults=6`)
             setSearchResults(response.data.items)
+            console.log(response.data.items)
         } catch (error) {
             console.log(error.message)
         }
@@ -48,7 +50,7 @@ const YoutubePage = () => {
 
     return (
         <div className='container'>
-            <div className='form-div'>
+            <div className='search-form'>
             <h1>Home Page for {user.username}</h1>
             <form onSubmit={handleSearch}>
                 <input
@@ -59,6 +61,7 @@ const YoutubePage = () => {
                 <br />
                 <button type='submit'>Search</button>
             </form>
+            <SearchResults results={searchResults}/>
             </div>  
             <div>
                 <h2>Featured Videos</h2>
