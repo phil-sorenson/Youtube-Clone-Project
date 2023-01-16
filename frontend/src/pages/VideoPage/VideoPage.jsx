@@ -34,15 +34,15 @@ const VideoPage = () => {
     
 
     
-        const fetchVideo = async () => {
-            try {
-                const videoResponse = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails&id=${videoId}&key=${KEY}`)   
-                setVideo(videoResponse.data.items)
-                console.log('video Data',videoResponse.data);
-            } catch (error) {
-                console.log(error.message)
-            }    
-        }
+    const fetchVideo = async () => {
+        try {
+            const videoResponse = await axios.get(`https://www.googleapis.com/youtube/v3/videos?part=snippet%2CcontentDetails&id=${videoId}&key=${KEY}`)   
+            setVideo(videoResponse.data.items)
+            console.log('video Data',videoResponse.data);
+        } catch (error) {
+            console.log(error.message)
+        }    
+    }
    
     
     const fetchComments = async () => {

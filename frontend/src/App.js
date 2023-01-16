@@ -42,9 +42,7 @@ function App() {
       <div className="searchBar">
       <SearchBar onSearch={handleSearch}/>
       </div>
-      {/* <SearchResults /> */}
-      {/* <VideoPage /> */}
-      {/* <RelatedVideos /> */}
+
       <Routes>
         <Route
           path="/"

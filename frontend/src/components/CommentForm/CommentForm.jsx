@@ -16,7 +16,7 @@ const CommentForm = ({ onAddComment }) => {
     const commentSubmit = async (event) => {
         event.preventDefault();
         let comment = {
-            videoId: videoId,
+            video_id: videoId,
             text: text,
             likes: likes,
             dislikes: dislikes,
