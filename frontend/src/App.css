@@ -56,3 +56,9 @@ button:hover {
   padding: 3px 7px;
   font-size: 17px;
 }
+
+.searchBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,9 +1,6 @@
 
-// Todo: Grab VideoId based on user OnClick event from SearchResults 
-//Todo: Pull videos from API #2 (Related Vids) and show them in grid from in the body of this page
-    // Embed a video player to show/play that was searched from SearchResults (<iframe>
-//Todo: Add onClick event to for the other related videos on the side panel of the page --> takes you to a different Video_id (backend get function)
-//Todo: Create a comments state value and display comments under the selected vid
+
+
     // Show a warning to users that they must be logged in to post a comment
          // Each video should have its own comments -- Base comments off of video ID
     // use the && functionality along with users token/name to differentiate logged in user and non logged in user

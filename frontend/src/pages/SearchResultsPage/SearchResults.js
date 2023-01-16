@@ -8,21 +8,30 @@
 import React, { useState, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import './SearchResults.css'
+import SearchBar from '../../components/SearchBar/SearchBar';
+import { KEY } from '../../localKey';
 
 
-const SearchResults = ({results}) => {
+const SearchResults = () => {
     
     const { videoId } = useParams()
     const [user, token] = useAuth();
-    const [searchQuery, setSearchQuery] = useState('');
-    const [videos, setVideos] = useState([]);
-    const [videoArray, setVideoArray] = useState([]);
+    // const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const location = useLocation();
+    const searchQuery = location.pathname.split('/')[2]
 
-    
-    
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await axios.get(`https://www.googleapis.com/youtube/v3/search?q=${searchQuery}&key=${KEY}&part=snippet&type=video&maxResults=6`)
+            setSearchResults(response.data.items)
+        }
+        fetchData();
+    },[searchQuery])
+
 
 
 
@@ -33,12 +42,13 @@ const SearchResults = ({results}) => {
                 <br />
                 <button type='button' onClick={()=> searchVideos()} >Search!</button>
             </div> */}
+           
             <div className='search-results'>
                 <ul>
-                    {results.map((result) => {
+                    {searchResults.map((result) => {
                         return(
                             <li key={result.id.videoId}>
-                                <Link to={`/videopage/${result.id.videoId}`}>
+                                <Link to={`/videoPage/${result.id.videoId}`}>
                                     <img src={result.snippet.thumbnails.default.url} alt={result.snippet.title}/>
                                     <p>{result.snippet.title}</p>
                                 </Link>
