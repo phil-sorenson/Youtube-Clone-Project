@@ -19,13 +19,17 @@ import { KEY } from '../../localKey';
 import { Link, useParams } from 'react-router-dom';
 import RelatedVideos from '../../components/RelatedVideos/RelatedVideos';
 import './VideoPage.css'
+import CommentForm from '../../components/CommentForm/CommentForm';
 
 const VideoPage = () => {
 
     const [user, token] = useAuth();
     const [video, setVideo] = useState(null);
     const [comments, setComments] = useState([])
-    
+    const [text, setText] = useState('')
+    const [likes, setLikes] = useState(0)
+    const [dislikes, setDislikes] = useState(0)
+    const [comment, setComment] = useState({})
     const { videoId } = useParams()
     
 
@@ -52,16 +56,25 @@ const VideoPage = () => {
         
     }
     
-    const handleCommentSubmit = async (event, comment) => {
-        event.preventDefault();
+    const handleCommentSubmit = async (comment) => {
+        // event.preventDefault();
+        // let comment = {
+        //     videoId: videoId,
+        //     text: text,
+        //     likes: likes,
+        //     dislikes: dislikes,
+        // }
+        console.log('created comment', comment)
         try {
-            await axios.post(`http://127.0.0.1:8000/api/comments`, comment, {
+            await axios.post(`http://127.0.0.1:8000/api/comments/`, comment, {
                 headers: {
                     Authorization: "Bearer " + token}
             });
         } catch (error) {
             console.log(error.message)
         }
+        
+        fetchComments();
     }
 
     useEffect(() => {
@@ -85,13 +98,15 @@ const VideoPage = () => {
             </div>
             <div className='comments-section'>
                 <div className='comment-container'>
-                <h2>Comments: </h2>
+                <h3>Comments:</h3>
                 <ul>
-                {comments.length > 0 && comments.map((comment)=> {
+                {comments.map((comment)=> {
                 return(
                     <li key={comment.id}>
                         <p>{comment.text}</p>
-                        <p>Comment By: {comment.user.username}</p>
+                        <p> {comment.user.username}</p>
+                        <button type='button'>Likes{comment.likes}</button>
+                        <button type='button'>Dislikes{comment.dislikes}</button>
                         <br/>
                     </li>
                         )
@@ -100,10 +115,13 @@ const VideoPage = () => {
                 </div>
                 <div className='comment-submit-form'>
                 {user ? (
-                    <form onSubmit={handleCommentSubmit}>
-                        <input type='text' placeholder='Add Comment' />
-                        <button type='submit'>Submit</button>
-                    </form>
+                    <CommentForm onAddComment={handleCommentSubmit} />
+                    // <form onSubmit={handleCommentSubmit}>
+                    //     <div>
+                    //         <input type='text' placeholder='Add Comment' value={videoId.comment} onChange={(event) => {setText(event.target.value)}} />
+                    //         <button type='submit'>Submit</button>
+                    //     </div>
+                    // </form>
                 ) : (
                     <p>You Must be Logged-in to Post a Comment</p>
                 )}
